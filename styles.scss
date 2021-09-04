@@ -1,0 +1,272 @@
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin scrollBtn {
+  display: none;
+  height: 50px;
+  width: 50px;
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  border-radius: 50%;
+  border: 0;
+  -moz-border-radius: 50%;
+  cursor: pointer;
+  background: none;
+  color: $blue;
+}
+
+@mixin tooltip {
+  visibility: hidden;
+  width: 120px;
+  background-color: white;
+  color: black;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  right: 110%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@mixin tooltipArrow {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent white;
+}
+
+$blue: rgb(12, 173, 248);
+$green: rgb(8, 138, 94);
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: url("food background.jpg") no-repeat fixed center;
+  background-size: cover;
+}
+
+h1 {
+  text-align: center;
+  color: rgb(108, 163, 26);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#heading-text {
+  color: lightgreen;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#food-search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // position: fixed;
+  // top: 0;
+  // bottom: 0;
+  // left: 0;
+  // right: 0;
+}
+
+#search-bar {
+  width: 25%;
+  height: 50px;
+  border-radius: 1.625rem 0px 0px 1.625rem;
+  border: none;
+  outline: none;
+  background-color: #f5f5f5;
+  padding: 0 3.5rem 0 1.5rem;
+}
+
+#submit-btn {
+  background: none;
+  background-color: #f5f5f5;
+  outline: none;
+  border: none;
+  border-radius: 0px 1.625rem 1.625rem 0px;
+  //   margin-left: -3.5rem;
+  height: 50px;
+  padding-right: 20px;
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+#submit-btn:hover {
+  //   color: rgb(24, 94, 187);
+  color: white;
+  background-color: rgb(24, 94, 187);
+}
+
+#results {
+  text-align: center;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  color: darkorange;
+  cursor: pointer;
+}
+
+li:hover {
+  color: forestgreen;
+}
+
+h2,
+h3,
+p {
+  text-align: center;
+  color: darkorange;
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
+header {
+  color: crimson;
+  text-align: center;
+  width: 100%;
+}
+
+header a {
+  color: lightgray;
+}
+
+img {
+  width: 10%;
+  height: 10%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 2%;
+}
+
+#scroll-down {
+  @include scrollBtn();
+
+  &::before,
+  &::after {
+    box-sizing: inherit;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+#scroll-down .tooltip {
+  @include tooltip();
+}
+
+#scroll-down .tooltip::after {
+  @include tooltipArrow();
+}
+
+#scroll-down:hover .tooltip {
+  visibility: visible;
+}
+
+#scroll-up {
+  @include scrollBtn();
+
+  &::before,
+  &::after {
+    box-sizing: inherit;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+#scroll-up .tooltip {
+  @include tooltip();
+}
+
+#scroll-up .tooltip::after {
+  @include tooltipArrow();
+}
+
+#scroll-up:hover .tooltip {
+  visibility: visible;
+}
+
+.spin {
+  width: 5em;
+  height: 5em;
+  padding: 0;
+
+  &:hover {
+    color: $blue;
+  }
+
+  &::before,
+  &::after {
+    top: 0;
+    left: 0;
+  }
+
+  &::before {
+    border: 2px solid transparent; // We're animating border-color again
+  }
+
+  &:hover::before {
+    border-top-color: $blue; // Show borders
+    border-right-color: $blue;
+    border-bottom-color: $blue;
+
+    transition: border-top-color 0.15s linear,
+      // Stagger border appearances
+      border-right-color 0.15s linear 0.1s,
+      border-bottom-color 0.15s linear 0.2s;
+  }
+
+  &::after {
+    border: 0 solid transparent; // Makes border thinner at the edges? I forgot what I was doing
+  }
+
+  &:hover::after {
+    border-top: 2px solid $blue; // Shows border
+    border-left-width: 2px; // Solid edges, invisible borders
+    border-right-width: 2px; // Solid edges, invisible borders
+    transform: rotate(270deg); // Rotate around circle
+    transition: transform 0.4s linear 0s, border-left-width 0s linear 0.35s; // Solid edge post-rotation
+  }
+}
+
+.circle {
+  border-radius: 100%;
+  box-shadow: none;
+
+  &::before,
+  &::after {
+    border-radius: 100%;
+  }
+}
+
+hr {
+  border-top: 3px solid #bbb;
+  width: 45%;
+}
+
+footer p {
+  color: $green;
+}
+
+footer a {
+  color: darkred;
+}
