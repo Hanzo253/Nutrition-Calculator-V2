@@ -33,70 +33,77 @@ function findFood(e) {
   // if there is no input found in the search bar after search button has been pressed
   if (searchTerm.trim()) {
     // using Calorie Ninjas API to find the food items and their nutrients' information
-    $.ajax({
-      method: "GET",
-      url: "https://api.calorieninjas.com/v1/nutrition?query=" + searchTerm,
-      headers: { "X-Api-Key": "2PyueR1IQUQ7RVv3GbA5iQ==2MpJfXId6iEa6XTt" },
-      contentType: "application/json",
-      success: function (result) {
-        // console.log(result.items);
-        // if the food does not exist
-        if (result.items.length === 0) {
-          alert("Unknown food");
-        } else {
-          $.map(result.items, function (food, i) {
-            totalCalories += food.calories;
-            totalCarbs += food.carbohydrates_total_g;
-            totalCholesterol += food.cholesterol_mg;
-            totalSatFat += food.fat_saturated_g;
-            totalFat += food.fat_total_g;
-            totalFiber += food.fiber_g;
-            totalPotassium += food.potassium_mg;
-            totalProtein += food.protein_g;
-            totalServingSize += food.serving_size_g;
-            totalSodium += food.sodium_mg;
-            totalSugars += food.sugar_g;
-            $("#results").append(`
-              <h3>${food.name}</h3>
-              <p>Calories: ${food.calories}</p>
-              <p>Carbonhydrates: ${food.carbohydrates_total_g} g</p>
-              <p>Cholesterol: ${food.cholesterol_mg} mg</p>
-              <p>Saturated Fat: ${food.fat_saturated_g} g</p>
-              <p>Fat: ${food.fat_total_g} g</p>
-              <p>Fiber: ${food.fiber_g} g</p>
-              <p>Potassium: ${food.potassium_mg} mg</p>
-              <p>Protein: ${food.protein_g} g</p>
-              <p>Serving Size: ${food.serving_size_g} g</p>
-              <p>Sodium: ${food.sodium_mg} mg</p>
-              <p>Sugars: ${food.sugar_g} g</p>
-              <hr>`);
-          });
+    $(function () {
+      $.ajax({
+        method: "GET",
+        url: "https://api.calorieninjas.com/v1/nutrition?query=" + searchTerm,
+        headers: { "X-Api-Key": "2PyueR1IQUQ7RVv3GbA5iQ==2MpJfXId6iEa6XTt" },
+        contentType: "application/json",
+        enctype: "mutipart/form-data",
+        success: function (result) {
+          // console.log(result.items);
+          // if the food does not exist
+          if (result.items.length === 0) {
+            total.innerHTML = "";
+            resultsHeading.innerHTML = "";
+            alert("Unknown food");
+          } else {
+            $.map(result.items, function (food, i) {
+              totalCalories += food.calories;
+              totalCarbs += food.carbohydrates_total_g;
+              totalCholesterol += food.cholesterol_mg;
+              totalSatFat += food.fat_saturated_g;
+              totalFat += food.fat_total_g;
+              totalFiber += food.fiber_g;
+              totalPotassium += food.potassium_mg;
+              totalProtein += food.protein_g;
+              totalServingSize += food.serving_size_g;
+              totalSodium += food.sodium_mg;
+              totalSugars += food.sugar_g;
+              $("#results").append(`
+                <h3>${food.name}</h3>
+                <p>Calories: ${food.calories}</p>
+                <p>Carbonhydrates: ${food.carbohydrates_total_g} g</p>
+                <p>Cholesterol: ${food.cholesterol_mg} mg</p>
+                <p>Saturated Fat: ${food.fat_saturated_g} g</p>
+                <p>Fat: ${food.fat_total_g} g</p>
+                <p>Fiber: ${food.fiber_g} g</p>
+                <p>Potassium: ${food.potassium_mg} mg</p>
+                <p>Protein: ${food.protein_g} g</p>
+                <p>Serving Size: ${food.serving_size_g} g</p>
+                <p>Sodium: ${food.sodium_mg} mg</p>
+                <p>Sugars: ${food.sugar_g} g</p>
+                <hr>`);
+            });
 
-          total.innerHTML = `<h2>Total</h2>
-                           <p>Total Calories: ${totalCalories}</p>
-                           <p>Total Carbonhydrates: ${totalCarbs} g</p>
-                           <p>Total Cholesterol: ${totalCholesterol} mg</p>
-                           <p>Total Saturated Fat: ${totalSatFat} g</p>
-                           <p>Total Fat: ${totalFat} g</p>
-                           <p>Total Fiber: ${totalFiber} g</p>
-                           <p>Total Potassium: ${totalPotassium} mg</p>
-                           <p>Total Protein: ${totalProtein} g</p>
-                           <p>Total Serving Size: ${totalServingSize} g</p>
-                           <p>Total Sodium: ${totalSodium} mg</p>
-                           <p>Total Sugars: ${totalSugars} g</p>`;
-        }
-      },
-      error: function ajaxError(jqXHR) {
-        console.error("Error: ", jqXHR.responseText);
-      },
+            total.innerHTML = `<h2>Total</h2>
+                            <p>Total Calories: ${totalCalories}</p>
+                            <p>Total Carbonhydrates: ${totalCarbs} g</p>
+                            <p>Total Cholesterol: ${totalCholesterol} mg</p>
+                            <p>Total Saturated Fat: ${totalSatFat} g</p>
+                            <p>Total Fat: ${totalFat} g</p>
+                            <p>Total Fiber: ${totalFiber} g</p>
+                            <p>Total Potassium: ${totalPotassium} mg</p>
+                            <p>Total Protein: ${totalProtein} g</p>
+                            <p>Total Serving Size: ${totalServingSize} g</p>
+                            <p>Total Sodium: ${totalSodium} mg</p>
+                            <p>Total Sugars: ${totalSugars} g</p>`;
+          }
+          resultsHeading.innerHTML = `<h1 id="heading-text">Search results for: ${searchTerm}</h1>`;
+        },
+        error: function ajaxError(jqXHR) {
+          console.error("Error: ", jqXHR.responseText);
+        },
+      });
     });
     search.value = "";
     scrollDownBtn.style.display = "block";
   } else {
+    total.innerHTML = "";
+    resultsHeading.innerHTML = "";
     alert("No inputs detected");
   }
 
-  resultsHeading.innerHTML = `<h1 id="heading-text">Search results for: ${searchTerm}</h1>`;
   results.innerHTML = "";
 
   // set nutrient variables back to 0 to restart calculations
